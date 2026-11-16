@@ -6,7 +6,9 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -23,5 +25,13 @@
     "@types/react": "^18.0.0",
     "react": "^18.0.0",
     "typescript": "^5.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingofmit/oncograph.git",
+    "directory": "packages/react"
   }
 }
