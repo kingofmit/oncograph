@@ -10,7 +10,7 @@ const significanceBadge: Record<string, string> = {
   diagnostic: "badge-blue",
   prognostic: "badge-purple",
   predictive: "badge-amber",
-  "therapeutic-target": "badge-green",
+  "therapeutic-target": "badge-coral",
 };
 
 function BiomarkerRow({ bm }: { bm: Biomarker }) {

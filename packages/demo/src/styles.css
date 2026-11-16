@@ -23,6 +23,11 @@
   --accent-subtle: rgba(0, 229, 204, 0.03);
   --accent-muted: rgba(0, 229, 204, 0.06);
   --accent-border: rgba(0, 229, 204, 0.15);
+  --red: #ff4d4d;
+  --red-dim: rgba(255, 77, 77, 0.2);
+  --red-glow: rgba(255, 77, 77, 0.55);
+  --red-subtle: rgba(255, 77, 77, 0.06);
+  --red-border: rgba(255, 77, 77, 0.15);
   --fg: #e0f2f1;
   --fg-muted: #5a8a8a;
   --fg-secondary: #b0d4d4;
@@ -91,7 +96,8 @@ a:hover {
   background: rgba(5, 10, 14, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--accent-border);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(0, 229, 204, 0.2), rgba(255, 77, 77, 0.15), rgba(0, 229, 204, 0.2)) 1;
   padding: 0.75rem 0;
 }
 
@@ -131,9 +137,11 @@ a:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: 700px;
   height: 400px;
-  background: radial-gradient(ellipse, rgba(0, 229, 204, 0.08) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse at 35% 50%, rgba(0, 229, 204, 0.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 65% 50%, rgba(255, 77, 77, 0.07) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -163,6 +171,11 @@ a:hover {
   text-shadow: 0 0 20px rgba(0, 229, 204, 0.5), 0 0 40px rgba(0, 229, 204, 0.2);
 }
 
+.glow-text-red {
+  color: var(--red);
+  text-shadow: 0 0 20px rgba(255, 77, 77, 0.5), 0 0 40px rgba(255, 77, 77, 0.2);
+}
+
 /* --- Glass Card --- */
 .glass {
   background: linear-gradient(135deg, rgba(10, 26, 31, 0.8), rgba(8, 18, 21, 0.6));
@@ -179,10 +192,25 @@ a:hover {
   box-shadow: 0 0 15px rgba(0, 229, 204, 0.1), inset 0 0 15px rgba(0, 229, 204, 0.05);
 }
 
+.glass-red {
+  background: linear-gradient(135deg, rgba(20, 12, 15, 0.8), rgba(15, 10, 12, 0.6));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 77, 77, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.glass-red:hover {
+  border-color: rgba(255, 77, 77, 0.3);
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.1), inset 0 0 15px rgba(255, 77, 77, 0.05);
+}
+
 /* --- Gradient Line --- */
 .gradient-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.3), rgba(255, 77, 77, 0.2), transparent);
   border: none;
   margin: 2rem 0;
 }
@@ -214,6 +242,12 @@ a:hover {
   background: rgba(239, 68, 68, 0.12);
 }
 
+.badge-coral {
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.12);
+  border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
 .badge-amber {
   color: #f59e0b;
   background: rgba(245, 158, 11, 0.12);
@@ -240,10 +274,23 @@ a:hover {
   font-size: 2.5rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #00e5cc, #3b82f6);
+  background: linear-gradient(135deg, #00e5cc, #00b3a0);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 204, 0.4));
+  line-height: 1.2;
+}
+
+.stat-glow-red {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ff4d4d, #e63946);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(255, 77, 77, 0.4));
   line-height: 1.2;
 }
 
@@ -559,8 +606,18 @@ a:hover {
 .km-chart .curve {
   fill: none;
   stroke: var(--accent);
-  stroke-width: 2;
-  filter: drop-shadow(0 0 4px rgba(0, 229, 204, 0.4));
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 204, 0.5));
+}
+
+.km-chart .data-point {
+  fill: var(--red);
+  filter: drop-shadow(0 0 4px rgba(255, 77, 77, 0.6));
+}
+
+.km-chart .curve-area {
+  fill: url(#curveGradient);
+  opacity: 0.15;
 }
 
 .km-chart .label {

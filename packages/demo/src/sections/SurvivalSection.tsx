@@ -152,8 +152,31 @@ function KaplanMeierCurve({
         Survival
       </text>
 
+      {/* Area fill under curve */}
+      <defs>
+        <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#00e5cc" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#00e5cc" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polygon
+        className="curve-area"
+        points={`${polyPoints.join(" ")} ${xScale(points[points.length - 1].months)},${yScale(0)} ${xScale(points[0].months)},${yScale(0)}`}
+      />
+
       {/* KM Curve */}
       <polyline className="curve" points={polyPoints.join(" ")} />
+
+      {/* Data points (red dots like the DNA banner) */}
+      {points.map((p, i) => (
+        <circle
+          key={i}
+          className="data-point"
+          cx={xScale(p.months)}
+          cy={yScale(p.survival)}
+          r={3.5}
+        />
+      ))}
     </svg>
   );
 }
@@ -189,7 +212,7 @@ export function SurvivalSection({ cancerType }: SurvivalSectionProps) {
       <div className="glass" style={{ marginBottom: "1.5rem" }}>
         <div className="stats-row">
           <div className="stat-item">
-            <span className="stat-glow">
+            <span className={data.fiveYearSurvival < 0.3 ? "stat-glow-red" : "stat-glow"}>
               {(data.fiveYearSurvival * 100).toFixed(1)}%
             </span>
             <span className="stat-label">5-Year Survival Rate</span>

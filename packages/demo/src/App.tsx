@@ -55,7 +55,8 @@ export function App() {
         <div className="hero-glow" />
         <div className="hero-content container">
           <h1>
-            Explore <span className="glow-text">Cancer Data</span>
+            Explore <span className="glow-text">Cancer</span>{" "}
+            <span className="glow-text-red">Data</span>
           </h1>
           <p>
             Search across federated repositories, biomarkers, drugs, pathways,

@@ -39,7 +39,7 @@ function DrugGlassCard({ drug }: { drug: Drug }) {
       </div>
       <div className="badges" style={{ marginBottom: "0.75rem" }}>
         {drug.targets.map((t) => (
-          <span key={t} className="badge badge-cyan">
+          <span key={t} className="badge badge-coral">
             {t}
           </span>
         ))}
