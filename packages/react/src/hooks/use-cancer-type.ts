@@ -10,6 +10,6 @@ export function useCancerType(query: string): UseFetchResult<CancerType | null> 
   return useFetch<CancerType | null>(
     `/discover?cancer=${encoded}`,
     query.length > 0,
-    (raw) => raw.cancerType ?? null,
+    (raw) => (raw as Record<string, unknown>).cancerType as CancerType | null ?? null,
   );
 }

@@ -81,7 +81,7 @@ export function DrugsSection({ cancerType }: DrugsSectionProps) {
   } = useFetch<Drug[]>(
     `/discover?cancer=${encodeURIComponent(cancerType.id)}`,
     true,
-    (raw: any) => raw.drugs ?? [],
+    (raw: unknown) => ((raw as Record<string, unknown>).drugs as Drug[]) ?? [],
   );
 
   if (error) {

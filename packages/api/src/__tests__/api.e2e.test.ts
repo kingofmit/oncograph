@@ -55,7 +55,8 @@ describe("Discovery", () => {
 describe("Biomarkers", () => {
   it("GET /biomarkers/nsclc returns at least 10 biomarkers", async () => {
     const { body } = await get("/biomarkers/nsclc");
-    expect(body.biomarkers.length).toBeGreaterThanOrEqual(10);
+    expect(body.items.length).toBeGreaterThanOrEqual(10);
+    expect(body.total).toBeGreaterThanOrEqual(10);
   });
 });
 
@@ -65,12 +66,12 @@ describe("Biomarkers", () => {
 describe("Drugs", () => {
   it("GET /drugs/EGFR returns at least 4 drugs", async () => {
     const { body } = await get("/drugs/EGFR");
-    expect(body.drugs.length).toBeGreaterThanOrEqual(4);
+    expect(body.items.length).toBeGreaterThanOrEqual(4);
   });
 
   it("GET /drugs/PD-1 returns at least 2 drugs", async () => {
     const { body } = await get("/drugs/PD-1");
-    expect(body.drugs.length).toBeGreaterThanOrEqual(2);
+    expect(body.items.length).toBeGreaterThanOrEqual(2);
   });
 });
 
@@ -80,12 +81,12 @@ describe("Drugs", () => {
 describe("Datasets", () => {
   it("GET /datasets/gdc returns at least 5 datasets", async () => {
     const { body } = await get("/datasets/gdc");
-    expect(body.datasets.length).toBeGreaterThanOrEqual(5);
+    expect(body.items.length).toBeGreaterThanOrEqual(5);
   });
 
   it("GET /datasets/tcia returns at least 5 datasets", async () => {
     const { body } = await get("/datasets/tcia");
-    expect(body.datasets.length).toBeGreaterThanOrEqual(5);
+    expect(body.items.length).toBeGreaterThanOrEqual(5);
   });
 });
 
@@ -167,7 +168,7 @@ describe("Completeness", () => {
 describe("Trials", () => {
   it("GET /trials?cancer=gbm returns a trials array", async () => {
     const { body } = await get("/trials?cancer=gbm");
-    expect(Array.isArray(body.trials)).toBe(true);
+    expect(Array.isArray(body.items)).toBe(true);
   });
 });
 

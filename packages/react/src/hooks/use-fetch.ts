@@ -7,7 +7,7 @@ export interface UseFetchResult<T> {
   error: Error | null;
 }
 
-export function useFetch<T>(path: string, enabled = true, transform?: (raw: any) => T): UseFetchResult<T> {
+export function useFetch<T>(path: string, enabled = true, transform?: (raw: unknown) => T): UseFetchResult<T> {
   const { apiBaseUrl } = useOncoGraphConfig();
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);

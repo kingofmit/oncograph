@@ -16,6 +16,6 @@ export function useDatasets(
   return useFetch<Dataset[]>(
     `/discover?${params.toString()}`,
     cancer.length > 0,
-    (raw) => raw.datasets ?? [],
+    (raw) => ((raw as Record<string, unknown>).datasets as Dataset[]) ?? [],
   );
 }

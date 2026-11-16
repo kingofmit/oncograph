@@ -1,4 +1,4 @@
-import { DiscoveryQuery, DiscoveryResult, DataType } from "./types";
+import { DiscoveryQuery, DiscoveryResult, DataType, Repository } from "./types";
 import { searchCancerTypes, getCancerTree } from "./taxonomy";
 import { DataRegistry } from "./registry";
 
@@ -43,7 +43,7 @@ export function discover(query: DiscoveryQuery, registry: DataRegistry): Discove
 
   // Collect referenced repositories
   const repoIds = new Set(filteredDatasets.map((d) => d.repositoryId));
-  const repositories = Array.from(repoIds).map((id) => registry.getRepository(id)).filter(Boolean) as any[];
+  const repositories = Array.from(repoIds).map((id) => registry.getRepository(id)).filter((r): r is Repository => r !== undefined);
 
   return {
     query,

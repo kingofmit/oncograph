@@ -10,6 +10,6 @@ export function useDrugs(target: string): UseFetchResult<Drug[]> {
   return useFetch<Drug[]>(
     `/drugs/${encoded}`,
     target.length > 0,
-    (raw) => raw.drugs ?? [],
+    (raw) => ((raw as Record<string, unknown>).items as Drug[]) ?? [],
   );
 }

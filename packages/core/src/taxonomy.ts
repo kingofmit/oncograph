@@ -978,27 +978,73 @@ export const CANCER_TYPES: CancerType[] = [
   { id: "ped-all-down-syndrome", name: "ALL Associated with Down Syndrome", parent: "pediatric", tissue: "Pediatric", aliases: ["DS-ALL"], oncoTreeCode: "ALL", icdO3Code: "9811/3", prevalence: "ultra-rare" },
 ];
 
-/** Find cancer types by keyword */
+// --- Pre-built indexes for O(1) lookups ---
+const idIndex = new Map<string, CancerType>();
+const childrenIndex = new Map<string, CancerType[]>();
+const searchTokenIndex = new Map<string, Set<string>>();
+
+for (const ct of CANCER_TYPES) {
+  idIndex.set(ct.id, ct);
+  // Index children by parent
+  if (ct.parent) {
+    if (!childrenIndex.has(ct.parent)) childrenIndex.set(ct.parent, []);
+    childrenIndex.get(ct.parent)!.push(ct);
+  }
+  // Index search tokens (id, name words, aliases, tissue)
+  const tokens = new Set<string>();
+  tokens.add(ct.id);
+  ct.name.toLowerCase().split(/\s+/).forEach((w) => tokens.add(w));
+  ct.aliases.forEach((a) => a.toLowerCase().split(/\s+/).forEach((w) => tokens.add(w)));
+  ct.tissue.toLowerCase().split(/\s+/).forEach((w) => tokens.add(w));
+  for (const token of tokens) {
+    if (!searchTokenIndex.has(token)) searchTokenIndex.set(token, new Set());
+    searchTokenIndex.get(token)!.add(ct.id);
+  }
+}
+
+/** Find cancer types by keyword — uses pre-built index with fallback to linear scan */
 export function searchCancerTypes(query: string): CancerType[] {
   const q = query.toLowerCase().trim();
+  if (!q) return [];
+
+  // Fast path: exact ID match
+  const exact = idIndex.get(q);
+  if (exact) return [exact];
+
+  // Fast path: single token index lookup
+  const indexed = searchTokenIndex.get(q);
+  if (indexed) return Array.from(indexed).map((id) => idIndex.get(id)!);
+
+  // Fallback: substring match for multi-word or partial queries
   return CANCER_TYPES.filter(
-    (c) => c.name.toLowerCase().includes(q) || c.id === q || c.aliases.some((a) => a.toLowerCase().includes(q)) || c.tissue.toLowerCase().includes(q),
+    (c) => c.name.toLowerCase().includes(q) || c.aliases.some((a) => a.toLowerCase().includes(q)) || c.tissue.toLowerCase().includes(q),
   );
 }
 
-/** Get a cancer type and all subtypes */
+// --- Tree cache for memoized subtree lookups ---
+const treeCache = new Map<string, CancerType[]>();
+
+/** Get a cancer type and all subtypes — memoized */
 export function getCancerTree(typeId: string): CancerType[] {
-  const result: CancerType[] = [];
-  const root = CANCER_TYPES.find((c) => c.id === typeId);
-  if (!root) return result;
-  result.push(root);
-  for (const child of CANCER_TYPES.filter((c) => c.parent === typeId)) {
+  const cached = treeCache.get(typeId);
+  if (cached) return cached;
+
+  const root = idIndex.get(typeId);
+  if (!root) return [];
+
+  const result: CancerType[] = [root];
+  const children = childrenIndex.get(typeId) ?? [];
+  for (const child of children) {
     result.push(...getCancerTree(child.id));
   }
+  treeCache.set(typeId, result);
   return result;
 }
 
+// --- Cached tissues ---
+const cachedTissues = [...new Set(CANCER_TYPES.map((c) => c.tissue))].sort();
+
 /** Get all tissue types */
 export function getTissues(): string[] {
-  return [...new Set(CANCER_TYPES.map((c) => c.tissue))].sort();
+  return cachedTissues;
 }

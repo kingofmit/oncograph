@@ -1,4 +1,4 @@
-import { Repository, Dataset, Biomarker, Drug, ClinicalTrial } from "./types";
+import { Repository, Dataset, Biomarker, Drug, ClinicalTrial, DataType } from "./types";
 
 /** Central registry for all data sources */
 export class DataRegistry {
@@ -17,7 +17,7 @@ export class DataRegistry {
   findDatasets(cancerTypeId: string, dataTypes?: string[]): Dataset[] {
     return this.datasets.filter((ds) => {
       const matchesCancer = ds.cancerTypes.includes(cancerTypeId) || ds.cancerTypes.includes("pan-cancer");
-      const matchesType = !dataTypes || dataTypes.some((dt) => ds.dataTypes.includes(dt as any));
+      const matchesType = !dataTypes || dataTypes.some((dt) => ds.dataTypes.includes(dt as DataType));
       return matchesCancer && matchesType;
     });
   }
