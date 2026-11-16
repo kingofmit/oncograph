@@ -5,6 +5,7 @@ import { serve } from "@hono/node-server";
 import {
   discover,
   computeCompleteness,
+  searchCancerTypes,
   type DataType,
   type AccessModel,
   type DiscoveryQuery,
@@ -161,17 +162,21 @@ app.get("/survival", (c) => {
     return c.json({ error: "Missing required query parameter: cancer" }, 400);
   }
 
+  // Resolve cancer type name from taxonomy for survival lookup
+  const matched = searchCancerTypes(cancer);
+  const cancerName = matched.length > 0 ? matched[0].name : cancer;
+
   const biomarker = c.req.query("biomarker");
 
   if (biomarker) {
-    const comparison = getSurvivalComparison(cancer, biomarker);
+    const comparison = getSurvivalComparison(cancerName, biomarker);
     if (!comparison) {
       return c.json({ error: "No survival data found for the given cancer type and biomarker" }, 404);
     }
     return c.json(comparison);
   }
 
-  const data = getSurvival(cancer);
+  const data = getSurvival(cancerName);
   if (!data) {
     return c.json({ error: "No survival data found for the given cancer type" }, 404);
   }
