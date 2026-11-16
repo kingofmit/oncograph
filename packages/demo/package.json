@@ -10,7 +10,6 @@
   "dependencies": {
     "@oncograph/react": "workspace:*",
     "@oncograph/core": "workspace:*",
-    "@picocss/pico": "^2.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

@@ -17,74 +17,114 @@ export function PathwaysSection({ cancerType }: PathwaysSectionProps) {
     return Array.from(unique);
   }, [biomarkers]);
 
-  const { data: analysis, loading: pathLoading, error } = usePathways(genes);
+  const {
+    data: analysis,
+    loading: pathLoading,
+    error,
+  } = usePathways(genes);
 
   const loading = bmLoading || pathLoading;
 
   if (error) {
     return (
-      <section>
-        <p role="alert">Error loading pathways: {error.message}</p>
-      </section>
+      <div className="error">Error loading pathways: {error.message}</div>
     );
   }
 
-  return (
-    <section aria-busy={loading}>
-      <h3>Pathway Analysis</h3>
-      {loading && <p>Loading pathways...</p>}
-      {!loading && genes.length === 0 && (
-        <p>No biomarker genes found to analyze.</p>
-      )}
+  if (loading) {
+    return (
+      <div className="loading">
+        <span className="loading-spinner" />
+        Loading pathways...
+      </div>
+    );
+  }
 
+  if (!loading && genes.length === 0) {
+    return <div className="empty">No biomarker genes found to analyze.</div>;
+  }
+
+  return (
+    <div>
       {analysis && (
         <>
+          {/* Affected Pathways */}
           {analysis.affectedPathways.length > 0 && (
-            <article>
-              <header>
-                <h4>Affected Pathways ({analysis.affectedPathways.length})</h4>
-              </header>
-              <ul>
+            <div style={{ marginBottom: "2rem" }}>
+              <div className="section-header">
+                <h3>Affected Pathways</h3>
+                <span className="count">
+                  {analysis.affectedPathways.length}
+                </span>
+              </div>
+              <div className="grid-2">
                 {analysis.affectedPathways.map((pw) => (
-                  <li key={pw.id}>
-                    <strong>{pw.name}</strong> ({pw.source}: {pw.sourceId})
-                    {pw.description && <p>{pw.description}</p>}
-                  </li>
+                  <div className="glass" key={pw.id}>
+                    <div className="card-title">{pw.name}</div>
+                    <div className="card-meta" style={{ marginBottom: "0.5rem" }}>
+                      <span className="badge badge-cyan">{pw.source}</span>
+                      <span className="badge badge-blue">{pw.sourceId}</span>
+                    </div>
+                    {pw.description && (
+                      <div className="pathway-desc">{pw.description}</div>
+                    )}
+                  </div>
                 ))}
-              </ul>
-            </article>
+              </div>
+            </div>
           )}
 
+          {/* Drug Targets */}
           {analysis.drugTargets.length > 0 && (
-            <article>
-              <header>
-                <h4>Drug Targets ({analysis.drugTargets.length})</h4>
-              </header>
-              <ul>
-                {analysis.drugTargets.map((dt, i) => (
-                  <li key={i}>
-                    <strong>{dt.drug}</strong> targets {dt.target} in{" "}
-                    {dt.pathway}
-                  </li>
-                ))}
-              </ul>
-            </article>
+            <div style={{ marginBottom: "2rem" }}>
+              <div className="section-header">
+                <h3>Drug Targets</h3>
+                <span className="count">{analysis.drugTargets.length}</span>
+              </div>
+              <div className="table-wrapper">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Drug</th>
+                      <th>Target</th>
+                      <th>Pathway</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysis.drugTargets.map((dt, i) => (
+                      <tr key={i}>
+                        <td style={{ color: "#e0f2f1", fontWeight: 500 }}>
+                          {dt.drug}
+                        </td>
+                        <td>
+                          <span className="badge badge-cyan">{dt.target}</span>
+                        </td>
+                        <td>{dt.pathway}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           )}
 
+          {/* Downstream Effects */}
           {analysis.downstreamEffects.length > 0 && (
-            <article>
-              <header>
-                <h4>Downstream Effects</h4>
-              </header>
-              <ul>
-                {analysis.downstreamEffects.map((effect, i) => (
-                  <li key={i}>{effect}</li>
-                ))}
-              </ul>
-            </article>
+            <div>
+              <div className="section-header">
+                <h3>Downstream Effects</h3>
+              </div>
+              <div className="glass">
+                <ul className="effect-list">
+                  {analysis.downstreamEffects.map((effect, i) => (
+                    <li key={i}>{effect}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           )}
         </>
       )}
-    </section>
+    </div>
   );
 }

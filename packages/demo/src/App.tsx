@@ -28,82 +28,128 @@ const TABS: { key: Tab; label: string }[] = [
   { key: "trials", label: "Trials" },
 ];
 
+const prevalenceBadge: Record<string, string> = {
+  common: "badge-green",
+  uncommon: "badge-amber",
+  rare: "badge-purple",
+  "ultra-rare": "badge-red",
+};
+
 export function App() {
   const [selectedCancerType, setSelectedCancerType] =
     useState<CancerType | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("datasets");
 
   return (
-    <main className="container">
-      <header>
-        <h1>OncoGraph</h1>
-        <p>Federated cancer data discovery and exploration</p>
-      </header>
+    <>
+      {/* Navigation */}
+      <nav className="nav">
+        <div className="nav-inner">
+          <span className="nav-logo">OncoGraph</span>
+          <span className="nav-subtitle">Federated Cancer Data Discovery</span>
+        </div>
+      </nav>
 
-      <section>
-        <h2>Select a Cancer Type</h2>
-        <CancerTypePicker onSelect={setSelectedCancerType} />
-      </section>
+      {/* Hero */}
+      <div className="hero">
+        <div className="hero-glow" />
+        <div className="hero-content container">
+          <h1>
+            Explore <span className="glow-text">Cancer Data</span>
+          </h1>
+          <p>
+            Search across federated repositories, biomarkers, drugs, pathways,
+            and clinical trials.
+          </p>
+          <div className="picker-wrapper">
+            <CancerTypePicker onSelect={setSelectedCancerType} />
+          </div>
+        </div>
+      </div>
 
-      {selectedCancerType && (
-        <>
-          <article>
-            <header>
-              <h2>{selectedCancerType.name}</h2>
-              <p>
-                Tissue: {selectedCancerType.tissue}
-                {selectedCancerType.oncoTreeCode &&
-                  ` | OncoTree: ${selectedCancerType.oncoTreeCode}`}
-                {selectedCancerType.prevalence &&
-                  ` | Prevalence: ${selectedCancerType.prevalence}`}
-              </p>
-            </header>
-          </article>
-
-          <nav>
-            <ul>
-              {TABS.map((tab) => (
-                <li key={tab.key}>
-                  <a
-                    href={`#${tab.key}`}
-                    aria-current={activeTab === tab.key ? "page" : undefined}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveTab(tab.key);
-                    }}
+      <div className="container">
+        {selectedCancerType && (
+          <>
+            {/* Cancer Type Info Card */}
+            <div className="glass info-card">
+              <div>
+                <h2>{selectedCancerType.name}</h2>
+              </div>
+              <div className="info-badges">
+                <span className="badge badge-cyan">
+                  {selectedCancerType.tissue}
+                </span>
+                {selectedCancerType.oncoTreeCode && (
+                  <span className="badge badge-blue">
+                    OncoTree: {selectedCancerType.oncoTreeCode}
+                  </span>
+                )}
+                {selectedCancerType.icdO3Code && (
+                  <span className="badge badge-purple">
+                    ICD-O-3: {selectedCancerType.icdO3Code}
+                  </span>
+                )}
+                {selectedCancerType.prevalence && (
+                  <span
+                    className={`badge ${prevalenceBadge[selectedCancerType.prevalence] ?? "badge-cyan"}`}
                   >
-                    {tab.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+                    {selectedCancerType.prevalence}
+                  </span>
+                )}
+              </div>
+            </div>
 
-          <section>
-            {activeTab === "datasets" && (
-              <DatasetsSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "biomarkers" && (
-              <BiomarkersSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "drugs" && (
-              <DrugsSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "pathways" && (
-              <PathwaysSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "survival" && (
-              <SurvivalSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "completeness" && (
-              <CompletenessSection cancerType={selectedCancerType} />
-            )}
-            {activeTab === "trials" && (
-              <TrialsSection cancerType={selectedCancerType} />
-            )}
-          </section>
-        </>
-      )}
-    </main>
+            {/* Tab Bar */}
+            <div className="tab-nav" style={{ marginTop: "2rem" }}>
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  className={activeTab === tab.key ? "active" : ""}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div className="content-section" key={activeTab}>
+              {activeTab === "datasets" && (
+                <DatasetsSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "biomarkers" && (
+                <BiomarkersSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "drugs" && (
+                <DrugsSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "pathways" && (
+                <PathwaysSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "survival" && (
+                <SurvivalSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "completeness" && (
+                <CompletenessSection cancerType={selectedCancerType} />
+              )}
+              {activeTab === "trials" && (
+                <TrialsSection cancerType={selectedCancerType} />
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <p>
+            <strong>Disclaimer:</strong> OncoGraph aggregates publicly available
+            cancer research data for informational purposes only. It is not
+            intended for clinical decision-making.
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }

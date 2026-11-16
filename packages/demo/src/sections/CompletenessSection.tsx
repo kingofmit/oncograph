@@ -11,48 +11,85 @@ export function CompletenessSection({ cancerType }: CompletenessSectionProps) {
 
   if (error) {
     return (
-      <section>
-        <p role="alert">Error loading completeness data: {error.message}</p>
-      </section>
+      <div className="error">
+        Error loading completeness data: {error.message}
+      </div>
     );
   }
 
+  if (loading) {
+    return (
+      <div className="loading">
+        <span className="loading-spinner" />
+        Loading completeness data...
+      </div>
+    );
+  }
+
+  if (!data) {
+    return <div className="empty">No completeness data available.</div>;
+  }
+
   return (
-    <section aria-busy={loading}>
-      <h3>Data Completeness</h3>
-      {loading && <p>Loading completeness data...</p>}
-      {!loading && !data && <p>No completeness data available.</p>}
+    <div>
+      <div className="section-header">
+        <h3>Data Completeness</h3>
+      </div>
 
-      {data && (
-        <>
-          <article>
-            <header>
-              <h4>Overall Score: {Math.round(data.score * 100)}%</h4>
-            </header>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {Object.entries(data.modalities).map(([modality, available]) => (
-                <li key={modality}>
-                  <span aria-label={available ? "Available" : "Missing"}>
-                    {available ? "[+]" : "[-]"}
-                  </span>{" "}
-                  {modality}
-                </li>
-              ))}
-            </ul>
-          </article>
+      <div className="glass" style={{ marginBottom: "1.5rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <span className="stat-glow">{Math.round(data.score * 100)}%</span>
+          <div className="stat-label">Overall Completeness Score</div>
+        </div>
 
-          {data.gaps.length > 0 && (
-            <details open>
-              <summary>Gaps ({data.gaps.length})</summary>
-              <ul>
-                {data.gaps.map((gap) => (
-                  <li key={gap}>{gap}</li>
-                ))}
-              </ul>
-            </details>
-          )}
-        </>
+        <hr className="gradient-line" style={{ margin: "1rem 0" }} />
+
+        <div
+          style={{
+            fontSize: "0.7rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            color: "#5a8a8a",
+            marginBottom: "0.75rem",
+          }}
+        >
+          Modalities
+        </div>
+        <div>
+          {Object.entries(data.modalities).map(([modality, available]) => (
+            <div className="modality-item" key={modality}>
+              <span
+                className={`modality-dot ${available ? "available" : "missing"}`}
+              />
+              <span style={{ color: available ? "#e0f2f1" : "#5a8a8a" }}>
+                {modality}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {data.gaps.length > 0 && (
+        <div className="glass">
+          <div
+            style={{
+              fontSize: "0.7rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "#f59e0b",
+              marginBottom: "0.75rem",
+              fontWeight: 600,
+            }}
+          >
+            Gaps ({data.gaps.length})
+          </div>
+          <ul className="gap-list">
+            {data.gaps.map((gap) => (
+              <li key={gap}>{gap}</li>
+            ))}
+          </ul>
+        </div>
       )}
-    </section>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import "@picocss/pico";
+import "./styles.css";
 import { OncoGraphProvider } from "@oncograph/react";
 import { App } from "./App";
 

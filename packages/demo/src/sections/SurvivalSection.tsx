@@ -13,9 +13,9 @@ function KaplanMeierCurve({
 }) {
   if (points.length === 0) return null;
 
-  const width = 400;
-  const height = 250;
-  const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+  const width = 500;
+  const height = 300;
+  const padding = { top: 25, right: 25, bottom: 45, left: 55 };
   const plotW = width - padding.left - padding.right;
   const plotH = height - padding.top - padding.bottom;
 
@@ -28,7 +28,6 @@ function KaplanMeierCurve({
   for (let i = 0; i < points.length; i++) {
     const { months, survival } = points[i];
     if (i > 0) {
-      // Horizontal step from previous point
       polyPoints.push(`${xScale(months)},${yScale(points[i - 1].survival)}`);
     }
     polyPoints.push(`${xScale(months)},${yScale(survival)}`);
@@ -45,42 +44,68 @@ function KaplanMeierCurve({
   const yTicks = [0, 0.25, 0.5, 0.75, 1.0];
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} style={{ maxWidth: "100%" }}>
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="km-chart"
+      style={{
+        background: "rgba(5, 10, 14, 0.6)",
+        borderRadius: "8px",
+        border: "1px solid rgba(0, 229, 204, 0.1)",
+      }}
+    >
+      {/* Grid lines */}
+      {yTicks.map((t) => (
+        <line
+          key={`gy-${t}`}
+          className="grid-line"
+          x1={padding.left}
+          y1={yScale(t)}
+          x2={padding.left + plotW}
+          y2={yScale(t)}
+        />
+      ))}
+      {xTicks.map((t) => (
+        <line
+          key={`gx-${t}`}
+          className="grid-line"
+          x1={xScale(t)}
+          y1={padding.top}
+          x2={xScale(t)}
+          y2={padding.top + plotH}
+        />
+      ))}
+
       {/* Axes */}
       <line
+        className="axis"
         x1={padding.left}
         y1={padding.top}
         x2={padding.left}
         y2={padding.top + plotH}
-        stroke="currentColor"
-        strokeWidth={1}
       />
       <line
+        className="axis"
         x1={padding.left}
         y1={padding.top + plotH}
         x2={padding.left + plotW}
         y2={padding.top + plotH}
-        stroke="currentColor"
-        strokeWidth={1}
       />
 
       {/* X-axis ticks and labels */}
       {xTicks.map((t) => (
         <g key={`x-${t}`}>
           <line
+            className="axis"
             x1={xScale(t)}
             y1={padding.top + plotH}
             x2={xScale(t)}
             y2={padding.top + plotH + 5}
-            stroke="currentColor"
-            strokeWidth={1}
           />
           <text
+            className="tick-label"
             x={xScale(t)}
             y={padding.top + plotH + 18}
             textAnchor="middle"
-            fontSize={10}
-            fill="currentColor"
           >
             {t}
           </text>
@@ -91,19 +116,17 @@ function KaplanMeierCurve({
       {yTicks.map((t) => (
         <g key={`y-${t}`}>
           <line
+            className="axis"
             x1={padding.left - 5}
             y1={yScale(t)}
             x2={padding.left}
             y2={yScale(t)}
-            stroke="currentColor"
-            strokeWidth={1}
           />
           <text
+            className="tick-label"
             x={padding.left - 10}
             y={yScale(t) + 3}
             textAnchor="end"
-            fontSize={10}
-            fill="currentColor"
           >
             {(t * 100).toFixed(0)}%
           </text>
@@ -112,32 +135,25 @@ function KaplanMeierCurve({
 
       {/* Axis labels */}
       <text
+        className="axis-title"
         x={padding.left + plotW / 2}
-        y={height - 4}
+        y={height - 6}
         textAnchor="middle"
-        fontSize={11}
-        fill="currentColor"
       >
         Months
       </text>
       <text
-        x={12}
+        className="axis-title"
+        x={14}
         y={padding.top + plotH / 2}
         textAnchor="middle"
-        fontSize={11}
-        fill="currentColor"
-        transform={`rotate(-90, 12, ${padding.top + plotH / 2})`}
+        transform={`rotate(-90, 14, ${padding.top + plotH / 2})`}
       >
         Survival
       </text>
 
       {/* KM Curve */}
-      <polyline
-        points={polyPoints.join(" ")}
-        fill="none"
-        stroke="var(--pico-primary)"
-        strokeWidth={2}
-      />
+      <polyline className="curve" points={polyPoints.join(" ")} />
     </svg>
   );
 }
@@ -147,59 +163,77 @@ export function SurvivalSection({ cancerType }: SurvivalSectionProps) {
 
   if (error) {
     return (
-      <section>
-        <p role="alert">Error loading survival data: {error.message}</p>
-      </section>
+      <div className="error">Error loading survival data: {error.message}</div>
     );
   }
 
+  if (loading) {
+    return (
+      <div className="loading">
+        <span className="loading-spinner" />
+        Loading survival data...
+      </div>
+    );
+  }
+
+  if (!data) {
+    return <div className="empty">No survival data available.</div>;
+  }
+
   return (
-    <section aria-busy={loading}>
-      <h3>Survival Statistics</h3>
-      {loading && <p>Loading survival data...</p>}
-      {!loading && !data && <p>No survival data available.</p>}
+    <div>
+      <div className="section-header">
+        <h3>Survival Statistics</h3>
+      </div>
 
-      {data && (
-        <>
-          <article>
-            <dl>
-              <dt>5-Year Survival Rate</dt>
-              <dd>{(data.fiveYearSurvival * 100).toFixed(1)}%</dd>
-              {data.medianSurvivalMonths != null && (
-                <>
-                  <dt>Median Survival</dt>
-                  <dd>{data.medianSurvivalMonths} months</dd>
-                </>
-              )}
-              {data.hazardRatio != null && (
-                <>
-                  <dt>Hazard Ratio</dt>
-                  <dd>{data.hazardRatio}</dd>
-                </>
-              )}
-              <dt>Source</dt>
-              <dd>{data.source}</dd>
-              {data.citation && (
-                <>
-                  <dt>Citation</dt>
-                  <dd>{data.citation}</dd>
-                </>
-              )}
-              <dt>Sample Size</dt>
-              <dd>{data.sampleSize.toLocaleString()}</dd>
-            </dl>
-          </article>
-
-          {data.kmCurvePoints && data.kmCurvePoints.length > 0 && (
-            <article>
-              <header>
-                <h4>Kaplan-Meier Survival Curve</h4>
-              </header>
-              <KaplanMeierCurve points={data.kmCurvePoints} />
-            </article>
+      <div className="glass" style={{ marginBottom: "1.5rem" }}>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-glow">
+              {(data.fiveYearSurvival * 100).toFixed(1)}%
+            </span>
+            <span className="stat-label">5-Year Survival Rate</span>
+          </div>
+          {data.medianSurvivalMonths != null && (
+            <div className="stat-item">
+              <span className="stat-glow">{data.medianSurvivalMonths}</span>
+              <span className="stat-label">Median Survival (months)</span>
+            </div>
           )}
-        </>
+          {data.hazardRatio != null && (
+            <div className="stat-item">
+              <span className="stat-glow">{data.hazardRatio}</span>
+              <span className="stat-label">Hazard Ratio</span>
+            </div>
+          )}
+          <div className="stat-item">
+            <span className="stat-glow">
+              {data.sampleSize.toLocaleString()}
+            </span>
+            <span className="stat-label">Sample Size</span>
+          </div>
+        </div>
+        <div style={{ marginTop: "1rem" }}>
+          <span
+            style={{
+              fontSize: "0.8rem",
+              color: "#5a8a8a",
+            }}
+          >
+            Source: {data.source}
+            {data.citation && ` -- ${data.citation}`}
+          </span>
+        </div>
+      </div>
+
+      {data.kmCurvePoints && data.kmCurvePoints.length > 0 && (
+        <div>
+          <div className="section-header">
+            <h3>Kaplan-Meier Survival Curve</h3>
+          </div>
+          <KaplanMeierCurve points={data.kmCurvePoints} />
+        </div>
       )}
-    </section>
+    </div>
   );
 }
