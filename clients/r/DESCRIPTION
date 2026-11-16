@@ -1,0 +1,17 @@
+Package: oncograph
+Title: R Client for the OncoGraph Federated Cancer Data Discovery API
+Version: 0.1.1
+Authors@R: c(
+    person("Ahmed", "Allem", role = c("aut", "cre"), email = "ahmed@oncograph.org"),
+    person("Andrea", "Dykes", role = "aut"),
+    person("Freedom", "Cheteni-Mandela", role = "aut"),
+    person("Paulina", "Valenzuela", role = "aut")
+    )
+Description: Provides R functions to query the OncoGraph REST API for cancer
+    data discovery across 29+ federated repositories. Query datasets, biomarkers,
+    drugs, pathways, survival statistics, and clinical trials for 802+ cancer types.
+License: MIT + file LICENSE
+URL: https://github.com/kingofmit/oncograph
+Imports: httr, jsonlite
+Encoding: UTF-8
+RoxygenNote: 7.3.0
