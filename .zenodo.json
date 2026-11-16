@@ -1,0 +1,44 @@
+{
+  "title": "OncoGraph: Open-Source Federated Cancer Data Discovery Engine",
+  "description": "OncoGraph is an open-source engine for discovering and navigating cancer research data across 30+ federated repositories. Given a cancer type and research need, it returns available datasets, endpoints, biomarkers, drug sensitivity data, imaging collections, and clinical trials from NCI CRDC, TCIA, ICGC ARGO, DepMap, GENIE, and more.",
+  "creators": [
+    {
+      "name": "Allem, Ahmed",
+      "orcid": "0009-0003-4937-5858",
+      "affiliation": "University of California, Berkeley"
+    },
+    {
+      "name": "Dykes, Andrea",
+      "affiliation": "Stanford University"
+    },
+    {
+      "name": "Cheteni-Mandela, Freedom",
+      "orcid": "0009-0006-3507-0094",
+      "affiliation": "Stanford University"
+    },
+    {
+      "name": "Valenzuela, Paulina",
+      "affiliation": "Neural Horizons, Research University"
+    }
+  ],
+  "upload_type": "software",
+  "license": "MIT",
+  "keywords": [
+    "cancer research",
+    "oncology",
+    "federated data",
+    "genomics",
+    "TCGA",
+    "clinical trials",
+    "open source",
+    "TypeScript"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/kingofmit/oncograph",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}

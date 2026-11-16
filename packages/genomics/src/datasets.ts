@@ -1,0 +1,8 @@
+import { Dataset } from "@oncograph/core";
+
+export const GENOMIC_DATASETS: Dataset[] = [
+  { id: "tcga", repositoryId: "gdc", name: "The Cancer Genome Atlas", description: "Multi-omics atlas of 33 cancer types. Genomic, transcriptomic, epigenomic, and clinical data. ~81% European ancestry.", cancerTypes: ["pan-cancer"], dataTypes: ["genomic", "transcriptomic", "epigenomic", "clinical"], patientCount: 11000, sampleCount: 33000, url: "https://www.cancer.gov/ccg/research/genome-sequencing/tcga", accessModel: "controlled", lastUpdated: "2024" },
+  { id: "target", repositoryId: "gdc", name: "Therapeutically Applicable Research to Generate Effective Treatments", description: "Pediatric and childhood cancer genomics.", cancerTypes: ["all", "aml"], dataTypes: ["genomic", "transcriptomic", "clinical"], patientCount: 6000, sampleCount: null, url: "https://www.cancer.gov/ccg/research/genome-sequencing/target", accessModel: "controlled", lastUpdated: "2024" },
+  { id: "icgc-argo-data", repositoryId: "icgc", name: "ICGC ARGO Dataset", description: "Tumor-normal pairs from 22 countries with diverse ancestry representation.", cancerTypes: ["pan-cancer"], dataTypes: ["genomic", "transcriptomic", "clinical"], patientCount: 25000, sampleCount: 50000, url: "https://platform.icgc-argo.org", accessModel: "controlled", lastUpdated: "2026" },
+  { id: "genie-data", repositoryId: "genie", name: "GENIE Clinical Genomics", description: "Real-world clinical genomics from major cancer centers worldwide.", cancerTypes: ["pan-cancer"], dataTypes: ["genomic", "clinical"], patientCount: 200000, sampleCount: null, url: "https://www.aacr.org/professionals/research/aacr-project-genie", accessModel: "controlled", lastUpdated: "2026" },
+];

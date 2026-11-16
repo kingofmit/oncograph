@@ -1,0 +1,9 @@
+import { Dataset } from "@oncograph/core";
+
+export const IMAGING_DATASETS: Dataset[] = [
+  { id: "brats", repositoryId: "tcia", name: "Brain Tumor Segmentation (BraTS)", description: "Multi-institutional MRI scans with expert tumor segmentation annotations. Benchmark for brain tumor AI models.", cancerTypes: ["gbm", "lgg", "brain"], dataTypes: ["imaging"], patientCount: 2000, sampleCount: null, url: "https://www.synapse.org/brats", accessModel: "open", lastUpdated: "2025" },
+  { id: "lidc-idri", repositoryId: "tcia", name: "Lung Image Database Consortium (LIDC-IDRI)", description: "CT scans with annotated lung nodules from multiple radiologists. Standard benchmark for lung nodule detection.", cancerTypes: ["nsclc", "sclc", "lung"], dataTypes: ["imaging"], patientCount: 1018, sampleCount: 244527, url: null, accessModel: "open", lastUpdated: "2023" },
+  { id: "camelyon", repositoryId: "tcia", name: "CAMELYON16/17", description: "Whole-slide histopathology images for detecting cancer metastases in lymph nodes.", cancerTypes: ["brca"], dataTypes: ["histopathology"], patientCount: 399, sampleCount: null, url: null, accessModel: "open", lastUpdated: "2023" },
+  { id: "tcga-imaging", repositoryId: "tcia", name: "TCGA Radiology & Pathology", description: "Radiology and digital pathology images linked to TCGA genomic data.", cancerTypes: ["pan-cancer"], dataTypes: ["imaging", "histopathology"], patientCount: 11000, sampleCount: null, url: null, accessModel: "open", lastUpdated: "2024" },
+  { id: "dpath", repositoryId: "tcia", name: "DPATH (TCGA + GTEx Histology Tiles)", description: "Digital histopathology tiles from cancer and normal tissue. Training data for CHIEF foundation model.", cancerTypes: ["pan-cancer"], dataTypes: ["histopathology"], patientCount: null, sampleCount: null, url: null, accessModel: "open", lastUpdated: "2024" },
+];

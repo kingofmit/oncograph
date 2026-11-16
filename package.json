@@ -1,0 +1,31 @@
+{
+  "name": "oncograph",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open-source federated cancer data discovery engine — given a cancer type and data need, returns available datasets, endpoints, biomarkers, and clinical trials across NCI CRDC, TCIA, ICGC, DepMap, and 25+ repositories.",
+  "author": "Ahmed Allem",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingofmit/oncograph.git"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "clean": "turbo clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "turbo": "^2.4.0",
+    "typescript": "^5.8.0"
+  }
+}
