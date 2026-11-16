@@ -11,12 +11,14 @@ import {
 } from "@oncograph/core";
 import { GENOMIC_DATASETS, CANCER_BIOMARKERS } from "@oncograph/genomics";
 import { IMAGING_DATASETS } from "@oncograph/imaging";
-import { KEY_DRUGS } from "@oncograph/drugs";
+import { KEY_DRUGS, DRUG_SENSITIVITY_DATASETS } from "@oncograph/drugs";
+import { CLINICAL_DATASETS } from "@oncograph/clinical";
 import { CancerSearchIndex } from "@oncograph/search";
 import { analyzePathways } from "@oncograph/pathways";
 import { getSurvival, getSurvivalComparison } from "@oncograph/survival";
 
 import { createRegistry } from "./registry-setup";
+import { openApiSpec } from "./openapi";
 
 // ---------------------------------------------------------------------------
 // Bootstrap
@@ -48,9 +50,14 @@ app.get("/health", (c) => {
   return c.json({
     status: "ok",
     version: "0.1.0",
-    packages: 9,
+    packages: 11,
     timestamp: Date.now(),
   });
+});
+
+/** GET /openapi.json — OpenAPI 3.0 specification */
+app.get("/openapi.json", (c) => {
+  return c.json(openApiSpec);
 });
 
 /** GET /discover — multi-modal cancer data discovery */
@@ -112,7 +119,7 @@ app.get("/trials", (c) => {
 /** GET /datasets/:repository — datasets for a repository */
 app.get("/datasets/:repository", (c) => {
   const repositoryId = c.req.param("repository");
-  const allDatasets = [...GENOMIC_DATASETS, ...IMAGING_DATASETS];
+  const allDatasets = [...GENOMIC_DATASETS, ...IMAGING_DATASETS, ...CLINICAL_DATASETS, ...DRUG_SENSITIVITY_DATASETS];
   const datasets = allDatasets.filter((d) => d.repositoryId === repositoryId);
   return c.json({ repositoryId, datasets });
 });
@@ -125,7 +132,7 @@ app.get("/search", (c) => {
   }
 
   const index = new CancerSearchIndex();
-  for (const ds of [...GENOMIC_DATASETS, ...IMAGING_DATASETS]) {
+  for (const ds of [...GENOMIC_DATASETS, ...IMAGING_DATASETS, ...CLINICAL_DATASETS, ...DRUG_SENSITIVITY_DATASETS]) {
     index.addDataset(ds);
   }
   for (const bm of CANCER_BIOMARKERS) index.addBiomarker(bm);
