@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Full-text search across all cancer data repositories.",
   "author": "Ahmed Allem",
   "license": "MIT",

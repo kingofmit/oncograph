@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/survival",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cancer survival statistics and Kaplan-Meier curve data from TCGA, SEER, and published trials.",
   "author": "Ahmed Allem",
   "license": "MIT",

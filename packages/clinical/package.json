@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/clinical",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SEER, UK Biobank, mCODE clinical data and epidemiological registries.",
   "author": "Ahmed Allem",
   "license": "MIT",

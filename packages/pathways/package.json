@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/pathways",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cancer signaling pathway database and mutation-to-pathway analysis.",
   "author": "Ahmed Allem",
   "license": "MIT",

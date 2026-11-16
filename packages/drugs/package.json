@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/drugs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DepMap, CCLE, GDSC drug sensitivity and cell line data.",
   "author": "Ahmed Allem",
   "license": "MIT",

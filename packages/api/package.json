@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "REST API server for OncoGraph cancer data discovery.",
   "author": "Ahmed Allem",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/imaging",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TCIA, IDC, BraTS imaging collections and DICOM metadata.",
   "author": "Ahmed Allem",
   "license": "MIT",

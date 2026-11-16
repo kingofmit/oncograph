@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/export",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Export discovery results to JSON, CSV, and clinical research memo.",
   "author": "Ahmed Allem",
   "license": "MIT",

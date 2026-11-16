@@ -1,6 +1,6 @@
 {
   "name": "@oncograph/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React hooks and components for OncoGraph cancer data discovery",
   "author": "Ahmed Allem",
   "license": "MIT",
