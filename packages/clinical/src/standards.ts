@@ -1,11 +1,4 @@
-/** Clinical data standards used in oncology */
-export interface ClinicalStandard {
-  id: string;
-  name: string;
-  abbreviation: string;
-  url: string;
-  purpose: string;
-}
+import { ClinicalStandard } from "@oncograph/core";
 
 export const CLINICAL_STANDARDS: ClinicalStandard[] = [
   { id: "mcode", name: "Minimal Common Oncology Data Elements", abbreviation: "mCODE", url: "https://mcodeinitiative.org", purpose: "Standardized oncology clinical data model built on HL7 FHIR. Ensures semantic interoperability across cancer registries." },
