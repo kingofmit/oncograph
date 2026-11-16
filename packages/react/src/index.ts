@@ -11,8 +11,10 @@ export { useBiomarkers } from "./hooks/use-biomarkers";
 export { useDrugs } from "./hooks/use-drugs";
 export { useTrials } from "./hooks/use-trials";
 export { useSearch } from "./hooks/use-search";
+export type { SearchResult, SearchResponse } from "./hooks/use-search";
 export { usePathways } from "./hooks/use-pathways";
 export { useSurvival } from "./hooks/use-survival";
+export { useCompleteness } from "./hooks/use-completeness";
 
 // Components
 export { CancerTypePicker } from "./components/CancerTypePicker";

@@ -13,7 +13,7 @@ export function CancerTypePicker({
 }: CancerTypePickerProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const { data: results, loading } = useCancerType(query);
+  const { data: match, loading } = useCancerType(query);
 
   const handleSelect = useCallback(
     (ct: CancerType) => {
@@ -37,20 +37,19 @@ export function CancerTypePicker({
         onFocus={() => setOpen(true)}
         aria-label="Cancer type search"
         role="combobox"
-        aria-expanded={open && (results?.length ?? 0) > 0}
+        aria-expanded={open && match != null}
       />
       {open && query.length > 0 && (
-        <ul role="listbox" style={{ position: "absolute", margin: 0, padding: 0, listStyle: "none" }}>
+        <ul role="listbox" style={{ position: "absolute", margin: 0, padding: 0, listStyle: "none", zIndex: 10 }}>
           {loading && <li aria-busy="true">Loading...</li>}
-          {results?.map((ct) => (
-            <li key={ct.id} role="option" onClick={() => handleSelect(ct)}>
-              <strong>{ct.name}</strong>
-              {ct.tissue && <span> - {ct.tissue}</span>}
+          {match && (
+            <li key={match.id} role="option" onClick={() => handleSelect(match)} style={{ cursor: "pointer" }}>
+              <strong>{match.name}</strong>
+              {match.tissue && <span> — {match.tissue}</span>}
+              {match.oncoTreeCode && <small> ({match.oncoTreeCode})</small>}
             </li>
-          ))}
-          {!loading && results && results.length === 0 && (
-            <li>No results found</li>
           )}
+          {!loading && !match && <li>No results found</li>}
         </ul>
       )}
     </div>

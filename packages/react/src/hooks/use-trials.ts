@@ -16,5 +16,6 @@ export function useTrials(
   return useFetch<ClinicalTrial[]>(
     `/trials?${params.toString()}`,
     cancer.length > 0,
+    (raw) => raw.trials ?? [],
   );
 }

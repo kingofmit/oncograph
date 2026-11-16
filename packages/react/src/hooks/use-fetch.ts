@@ -7,7 +7,7 @@ export interface UseFetchResult<T> {
   error: Error | null;
 }
 
-export function useFetch<T>(path: string, enabled = true): UseFetchResult<T> {
+export function useFetch<T>(path: string, enabled = true, transform?: (raw: any) => T): UseFetchResult<T> {
   const { apiBaseUrl } = useOncoGraphConfig();
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
@@ -28,10 +28,10 @@ export function useFetch<T>(path: string, enabled = true): UseFetchResult<T> {
     fetch(`${apiBaseUrl}${path}`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-        return res.json() as Promise<T>;
+        return res.json();
       })
       .then((json) => {
-        setData(json);
+        setData(transform ? transform(json) : json as T);
         setLoading(false);
       })
       .catch((err: unknown) => {

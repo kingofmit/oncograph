@@ -13,5 +13,9 @@ export function useDatasets(
   if (dataTypes && dataTypes.length > 0) {
     params.set("dataTypes", dataTypes.join(","));
   }
-  return useFetch<Dataset[]>(`/discover?${params.toString()}`, cancer.length > 0);
+  return useFetch<Dataset[]>(
+    `/discover?${params.toString()}`,
+    cancer.length > 0,
+    (raw) => raw.datasets ?? [],
+  );
 }

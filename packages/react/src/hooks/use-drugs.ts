@@ -7,5 +7,9 @@ import { useFetch, type UseFetchResult } from "./use-fetch";
  */
 export function useDrugs(target: string): UseFetchResult<Drug[]> {
   const encoded = encodeURIComponent(target);
-  return useFetch<Drug[]>(`/drugs/${encoded}`, target.length > 0);
+  return useFetch<Drug[]>(
+    `/drugs/${encoded}`,
+    target.length > 0,
+    (raw) => raw.drugs ?? [],
+  );
 }

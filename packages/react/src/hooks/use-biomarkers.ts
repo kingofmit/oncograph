@@ -10,5 +10,6 @@ export function useBiomarkers(cancerType: string): UseFetchResult<Biomarker[]> {
   return useFetch<Biomarker[]>(
     `/biomarkers/${encoded}`,
     cancerType.length > 0,
+    (raw) => raw.biomarkers ?? [],
   );
 }
