@@ -5,3 +5,9 @@ dist
 .DS_Store
 coverage
 .codeagento
+.claude
+.cursor
+.aider
+.continue
+.copilot
+.playwright-mcp
